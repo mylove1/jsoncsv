@@ -3,7 +3,8 @@
 # 2015.10.09
 
 import json
-import xlwt
+#import xlwt
+import xlsxwriter
 
 from jsoncsv import PY3
 
@@ -137,8 +138,8 @@ class DumpXLS(DumpExcel):
         super(DumpXLS, self).initialize(**kwargs)
 
         self.sheet = kwargs.get('sheet', 'Sheet1')
-        self.wb = xlwt.Workbook(encoding='utf-8')
-        self.ws = self.wb.add_sheet(self.sheet)
+        self.wb = xlsxwriter.Workbook(self.fout)
+        self.ws = self.wb.add_worksheet(self.sheet)
         self.row = 0
         self.cloumn = 0
 
@@ -159,7 +160,7 @@ class DumpXLS(DumpExcel):
         self.row += 1
 
     def on_finish(self):
-        self.wb.save(self.fout)
+        self.wb.close()
 
 
 def dumpexcel(fin, fout, type_, **kwargs):
